@@ -19,10 +19,17 @@ public class MainUIHandler : MonoBehaviour
     {
         
     }
+    // This go to Option Menu
+    public void GoToOptionMenu()
+    {
+        SceneManager.LoadScene(2);
+    }
+    // This go to Credit Menu
     public void GoToCreditMenu()
     {
         SceneManager.LoadScene(1);
     }
+    // This go to Exit Game
     public void Exit()
     {
 #if UNITY_EDITOR

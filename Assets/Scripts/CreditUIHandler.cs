@@ -16,7 +16,7 @@ public class CreditUIHandler : MonoBehaviour
     {
         
     }
-
+    // This go to Main Menu
     public void BackToMain()
     {
         SceneManager.LoadScene(0);
