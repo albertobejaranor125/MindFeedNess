@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/PlayMenu.unity
     guid: 8e1cf388826c6f94182d0146f5187145
+  - enabled: 1
+    path: Assets/Scenes/EnergyLevelNameUser.unity
+    guid: a7195d0e5a9fed3449ec81f103580eb2
   m_configObjects: {}

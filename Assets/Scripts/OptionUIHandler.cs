@@ -19,17 +19,19 @@ public class OptionUIHandler : MonoBehaviour
     {
         
     }
+    //This goes to Main Menu
     public void GoToMainMenu()
     {
         SceneManager.LoadScene(0);
     }
-
+    //This sets Master Volume
     public void SetMasterVol()
     {
         masterMixer.SetFloat("MasterVol", masterSlider.value);
 
         PlayerPrefs.SetFloat("MasterVol", masterSlider.value);
     }
+    //This sets SFX volume
     public void SetSFXVol()
     {
         masterMixer.SetFloat("SFXVol", sfxSlider.value);
