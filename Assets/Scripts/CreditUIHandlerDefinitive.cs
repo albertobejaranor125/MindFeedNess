@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class EnergyUserHandler : MonoBehaviour
+public class CreditUIHandlerDefinitive : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -15,10 +14,5 @@ public class EnergyUserHandler : MonoBehaviour
     void Update()
     {
         
-    }
-    //This goes to Level Selection
-    public void GoToLevelSelection()
-    {
-        SceneManager.LoadScene(3);
     }
 }

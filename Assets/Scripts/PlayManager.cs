@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class CreditUIHandler : MonoBehaviour
+public class PlayManager : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -15,10 +15,5 @@ public class CreditUIHandler : MonoBehaviour
     void Update()
     {
         
-    }
-    // This goes to Main Menu
-    public void BackToMain()
-    {
-        SceneManager.LoadScene(0);
     }
 }
