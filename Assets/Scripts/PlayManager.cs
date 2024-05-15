@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static UnityEngine.Rendering.DebugUI;
 
 public class PlayManager : MonoBehaviour
@@ -11,21 +12,26 @@ public class PlayManager : MonoBehaviour
     [SerializeField] private GameObject player;
     [SerializeField] private Transform checkPoints;
     private Dictionary<Transform, List<List<Transform>>> allCheckpointsMap = new Dictionary<Transform, List<List<Transform>>>();
-    static Transform NodoActual;
-    static int PathActual;
-    static int NodosTotales = 0;
-    static int PathTotales = 0;
+    Transform DecisionActual;
+    int PathActual;
+    int NodoActual;
     // Start is called before the first frame update
     void Start()
     {
-        throughDecisionNode(checkPoints.GetComponent<Transform>());
+        DecisionActual = checkPoints.GetComponent<Transform>();
+        player.transform.position = DecisionActual.transform.position;
+
+        PathActual = -1;
+        NodoActual = -1;
+
+        throughDecisionNode(DecisionActual);
     }
 
     void throughDecisionNode(Transform decisionNode) //decision Node = Nodo negro
     {
         //añadir decision node como clave de mi estructura
         allCheckpointsMap.Add(decisionNode, new List<List<Transform>>());
-        NodosTotales++;
+        
         //para cada Nodo hijo tipo "Path"        
         for (int i = 0; i < decisionNode.childCount; ++i)
         {
@@ -33,7 +39,7 @@ public class PlayManager : MonoBehaviour
             List<Transform> path = throughPathNode(decisionNode.GetChild(i));
             if (path.Count > 0)
             {
-                PathTotales += path.Count;
+                
                 allCheckpointsMap[decisionNode].Add(path); //añadir un camino
                                                            //recursividad para los hijos de hijos
                 throughDecisionNode(path[path.Count - 1]);
@@ -63,35 +69,61 @@ public class PlayManager : MonoBehaviour
     void Update()
     {
         //deberias conocer (variable global) el nodo de decision actual y nodo transitorio actual
-
-        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+        if (PathActual == -1 && Input.GetKey(KeyCode.LeftArrow))
         {
+            PathActual = 0;
+            NodoActual = -1;
             _iniciorecorrido = DateTime.Now;
+        }
 
+        if (PathActual == -1 && Input.GetKey(KeyCode.RightArrow))
+        {
+            PathActual = 1;
+            NodoActual = -1;
+            _iniciorecorrido = DateTime.Now;
+        }
+
+        if (PathActual != -1)
+        { 
             moveToNextPoint();
         }
     }
 
     private void moveToNextPoint()
     {
-        PathActual = 0;
-        List<Transform> path = allCheckpointsMap[NodoActual][PathActual];
+        List<Transform> path = allCheckpointsMap[DecisionActual][PathActual];
         float partialTime = _tiempoPaseo / path.Count;
-        Transform init = path[PathActual];
-        Transform end = path[PathActual + 1];
+        Transform init, end;
+        if (NodoActual == -1) 
+        {
+            init = DecisionActual;
+            end = path[0];
+        }
+        else
+        {
+            init = path[NodoActual];
+            end = path[NodoActual + 1];
+        }
+         
         float ratio = (float)(DateTime.Now - _iniciorecorrido).TotalMilliseconds / partialTime;
+        Debug.Log(ratio);
         player.transform.position = Vector3.Lerp(init.position, end.position, ratio);
+        Vector3 initRotation = new Vector3(init.rotation.x, init.rotation.y, init.rotation.z);
+        Vector3 endRotation = new Vector3(end.rotation.x, end.rotation.y, end.rotation.z);
+        player.transform.rotation = Quaternion.FromToRotation(initRotation, endRotation);
         //si ratio = 1 -> hay cambair caminoActual por CaminaoActual+
         if (ratio == 1)
         {
-            path = allCheckpointsMap[NodoActual][PathActual + 1];
+            NodoActual++;
         }
-        else if (path.Count == 0)
+        if (NodoActual == path.Count-1)
         {
-            PathActual++;
-            
-            path = allCheckpointsMap[NodoActual][PathActual];
+            DecisionActual = path[NodoActual-1];
+            PathActual = -1;
+            NodoActual = -1;
         }
         //si estiy en el ultimo node de camino -> cambiar NodoActual por ese nuevo nodo de decision
     }
+
+    
 }
