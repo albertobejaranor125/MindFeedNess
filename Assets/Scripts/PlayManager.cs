@@ -64,22 +64,22 @@ public class PlayManager : MonoBehaviour
 
     // Update is called once per frame
     static DateTime _iniciorecorrido;
-    static float _tiempoPaseo = 1000;
-    
+    static float _tiempoPaseo = 10000;
+    static Transform initi, end;
     void Update()
     {
         //deberias conocer (variable global) el nodo de decision actual y nodo transitorio actual
         if (PathActual == -1 && Input.GetKey(KeyCode.LeftArrow))
         {
             PathActual = 0;
-            NodoActual = -1;
+            NodoActual = -1;//-1;
             _iniciorecorrido = DateTime.Now;
         }
 
         if (PathActual == -1 && Input.GetKey(KeyCode.RightArrow))
         {
             PathActual = 1;
-            NodoActual = -1;
+            NodoActual = -1;//-1;
             _iniciorecorrido = DateTime.Now;
         }
 
@@ -93,35 +93,39 @@ public class PlayManager : MonoBehaviour
     {
         List<Transform> path = allCheckpointsMap[DecisionActual][PathActual];
         float partialTime = _tiempoPaseo / path.Count;
-        Transform init, end;
+
+        //Transform initi, end;
         if (NodoActual == -1) 
         {
-            init = DecisionActual;
+            initi = DecisionActual;
             end = path[0];
         }
-        else
+        else if(NodoActual <= path.Count)
         {
-            init = path[NodoActual];
-            end = path[NodoActual + 1];
+            initi = path[NodoActual];
+            end = path[NodoActual+1];
         }
+        
          
         float ratio = (float)(DateTime.Now - _iniciorecorrido).TotalMilliseconds / partialTime;
         Debug.Log(ratio);
-        player.transform.position = Vector3.Lerp(init.position, end.position, ratio);
-        Vector3 initRotation = new Vector3(init.rotation.x, init.rotation.y, init.rotation.z);
+        player.transform.position = Vector3.Lerp(initi.position, end.position, ratio);
+        Vector3 initRotation = new Vector3(initi.rotation.x, initi.rotation.y, initi.rotation.z);
         Vector3 endRotation = new Vector3(end.rotation.x, end.rotation.y, end.rotation.z);
-        player.transform.rotation = Quaternion.FromToRotation(initRotation, endRotation);
+        //player.transform.rotation = Quaternion.FromToRotation(initRotation, endRotation);
+        player.transform.rotation = Quaternion.Lerp(initi.rotation, end.rotation, ratio);
         //si ratio = 1 -> hay cambair caminoActual por CaminaoActual+
-        if (ratio == 1)
+        if (ratio >= 1)
         {
             NodoActual++;
         }
         if (NodoActual == path.Count-1)
         {
-            DecisionActual = path[NodoActual-1];
+            DecisionActual = path[NodoActual];
             PathActual = -1;
             NodoActual = -1;
         }
+        
         //si estiy en el ultimo node de camino -> cambiar NodoActual por ese nuevo nodo de decision
     }
 
