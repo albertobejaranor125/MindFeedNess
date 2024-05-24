@@ -11,7 +11,7 @@ public class ScriptManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Button exitButton;
-    private int score;
+    public int score { get; set; }
     private int highScore;
     // Start is called before the first frame update
     void Start()
@@ -21,7 +21,7 @@ public class ScriptManager : MonoBehaviour
         UpdateScore(0);
     }
 
-    private void UpdateScore(int scoreToAdd)
+    public void UpdateScore(int scoreToAdd)
     {
         score += scoreToAdd;
         scoreText.text = "Puntos: "+score;
