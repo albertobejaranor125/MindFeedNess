@@ -14,6 +14,11 @@ public class PlayManager : MonoBehaviour
     [SerializeField] private Transform checkPoints;
     [SerializeField] private List<GameObject> allQuestions;
     [SerializeField] private GameObject clouds;
+    [SerializeField] private GameObject gameOverWell;
+    [SerializeField] private GameObject gameOverRegular;
+    [SerializeField] private GameObject gameOverBad;
+    [SerializeField] private List<GameObject> allSherps;
+    [SerializeField] private GameObject rains;
     struct CheckPoint
     {
         Transform node;
@@ -47,7 +52,7 @@ public class PlayManager : MonoBehaviour
     int NodoActual;
     static float velocidad = 5f;
     private ScriptManager scriptManager;
-    //private bool isActive;
+    private bool isActive = true;
     //List<CheckPoint> checkPointList = new List<CheckPoint>();
     // Start is called before the first frame update
     void Start()
@@ -58,8 +63,11 @@ public class PlayManager : MonoBehaviour
         enableQuestion();
         PathActual = -1;
         NodoActual = -1;
+        enableAudioSherp();
         //isActive = true;
         throughDecisionNode(DecisionActual);
+        clouds.SetActive(true);
+        rains.SetActive(true);
     }
     void throughDecisionNode(Transform decisionNode) //decision Node = Nodo negro
     {
@@ -119,6 +127,10 @@ public class PlayManager : MonoBehaviour
     Quaternion final;
     void Update()
     {
+        if (!isActive)
+        {
+            return;
+        }
         //deberias conocer (variable global) el nodo de decision actual y nodo transitorio actual
         if (PathActual == -1 && Input.GetKey(KeyCode.LeftArrow))
         {
@@ -142,6 +154,8 @@ public class PlayManager : MonoBehaviour
         { 
             moveToNextPoint();
         }
+        clouds.transform.position = player.transform.position;
+        
     }
     private void moveToNextPoint()
     {
@@ -177,12 +191,14 @@ public class PlayManager : MonoBehaviour
             enableQuestion();
             PathActual = -1;
             NodoActual = -1;
+            if (!allCheckpointsMap.ContainsKey(DecisionActual))
+            {
+                isActive = false;
+                gameOver();
+            }
             return;
-        }else if(NodoActual == -1 && path.Count == 0)
-        {
-            //clouds.SetActive(false);
-            //gameOver();
         }
+        
         _lastCheckpoint = DateTime.Now;
         Vector3 haciaDondeMiroAhora = player.transform.forward;
         Vector3 haciaDondeQuieroMirar = (end.Nodo.position - initi.Nodo.position).normalized;
@@ -220,9 +236,42 @@ public class PlayManager : MonoBehaviour
         }
     }
 
-    /*private void GameOver()
+    private void gameOver()
     {
-        isActive = false;
-        scriptManager.score;
-    }*/
+        clouds.SetActive(false);
+        disableAudioSherp();
+        rains.SetActive(false);
+        if(scriptManager.score >= 0 && scriptManager.score < 2)
+        {
+            gameOverWell.SetActive(true);
+        }
+        else if(scriptManager.score >= 2 && scriptManager.score < 4)
+        {
+            gameOverRegular.SetActive(true);
+        }
+        else
+        {
+            gameOverBad.SetActive(true);
+        }
+    }
+
+    private void enableAudioSherp()
+    {
+        for(int i = 0; i < allSherps.Count; i++)
+        {
+            AudioSource audio = allSherps[i].GetComponent<AudioSource>();
+            audio.loop = true;
+            audio.Play();
+        }
+    }
+
+    private void disableAudioSherp()
+    {
+        for (int i = 0; i < allSherps.Count; i++)
+        {
+            AudioSource audio = allSherps[i].GetComponent<AudioSource>();
+            audio.loop = true;
+            audio.Stop();
+        }
+    }
 }
