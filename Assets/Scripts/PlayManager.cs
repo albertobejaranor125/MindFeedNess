@@ -53,10 +53,12 @@ public class PlayManager : MonoBehaviour
     static float velocidad = 5f;
     private ScriptManager scriptManager;
     private bool isActive = true;
+    public DecisionNode decisionNodeActual;
     //List<CheckPoint> checkPointList = new List<CheckPoint>();
     // Start is called before the first frame update
     void Start()
     {
+        
         DecisionActual = checkPoints.GetComponent<Transform>();
         player.transform.position = DecisionActual.transform.position;
         scriptManager = GameObject.Find("Canvas").GetComponent<ScriptManager>(); ;
@@ -66,8 +68,8 @@ public class PlayManager : MonoBehaviour
         enableAudioSherp();
         //isActive = true;
         throughDecisionNode(DecisionActual);
-        clouds.SetActive(true);
-        rains.SetActive(true);
+        //clouds.SetActive(true);
+        //rains.SetActive(true);
     }
     void throughDecisionNode(Transform decisionNode) //decision Node = Nodo negro
     {
@@ -138,7 +140,7 @@ public class PlayManager : MonoBehaviour
             scriptManager.UpdateScore(0);
             PathActual = 0;
             NodoActual = -1;//-1;
-            changeNode();
+            decisionNodeActual.changeNode();
         }
 
         if (PathActual == -1 && Input.GetKey(KeyCode.RightArrow))
@@ -147,17 +149,17 @@ public class PlayManager : MonoBehaviour
             scriptManager.UpdateScore(1);
             PathActual = 1;
             NodoActual = -1;//-1;
-            changeNode();
+            decisionNodeActual.changeNode();
         }
 
         if (PathActual != -1)
         { 
-            moveToNextPoint();
+            decisionNodeActual.moveToNextPoint();
         }
-        clouds.transform.position = player.transform.position;
+        //clouds.transform.position = player.transform.position;
         
     }
-    private void moveToNextPoint()
+    /*private void moveToNextPoint()
     {
         float ratio = (float)(DateTime.Now - _lastCheckpoint).TotalMilliseconds / (end.Tiempo*1000);
         Debug.Log(ratio);
@@ -204,7 +206,7 @@ public class PlayManager : MonoBehaviour
         Vector3 haciaDondeQuieroMirar = (end.Nodo.position - initi.Nodo.position).normalized;
         final = Quaternion.FromToRotation(haciaDondeMiroAhora, haciaDondeQuieroMirar);
         player.transform.forward = haciaDondeQuieroMirar;
-    }
+    }*/
 
     private void disableQuestion()
     {
@@ -238,9 +240,9 @@ public class PlayManager : MonoBehaviour
 
     private void gameOver()
     {
-        clouds.SetActive(false);
+        //clouds.SetActive(false);
         disableAudioSherp();
-        rains.SetActive(false);
+        //rains.SetActive(false);
         if(scriptManager.score >= 0 && scriptManager.score < 2)
         {
             gameOverWell.SetActive(true);
