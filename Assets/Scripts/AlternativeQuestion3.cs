@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class AlternativeQuestion3 : DecisionNode
 {
-    public override void endNode()
+    [SerializeField] private GameObject bedBlanket;
+    private Animation bedBlanketAnimation;
+    private void Start()
     {
-        throw new System.NotImplementedException();
+        bedBlanketAnimation = bedBlanket.GetComponent<Animation>();
     }
-
     public override void initNode()
     {
-        throw new System.NotImplementedException();
+        base.initNode();
     }
-
-    public override bool processNode()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public override void updateNode()
     {
-        throw new System.NotImplementedException();
+        base.updateNode();
+        if(PathActual == 1)
+        {
+            bedBlanketAnimation.Play("BedBlanketIdle");
+            bedBlanketAnimation.Stop("BedBlanketIdle");
+        }
     }
 }

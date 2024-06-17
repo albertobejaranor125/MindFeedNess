@@ -5,46 +5,20 @@ using UnityEngine;
 
 public class Question1 : DecisionNode
 {
-    private bool init = false;
-    private bool update = false;
-    private bool end = false;
-    
-    public override bool processNode()
-    {
-        if (!init)
-        {
-            init = true;
-            initNode();
-        }else if(!update)
-        {
-            update = true;
-            updateNode();
-        }
-        else
-        {
-            end = true;
-            endNode();
-        }
-        return end;
-    }
-
-    public override void endNode()
-    {
-        throw new System.NotImplementedException();
-    }
-
+    [SerializeField] private GameObject clouds;
+    [SerializeField] private GameObject rains;
     public override void initNode()
     {
-        
-        if(NodeDecision != null)
-        {
-
-        }
+        base.initNode();
     }
-
     public override void updateNode()
     {
-        throw new System.NotImplementedException();
+        base.updateNode();
+        if (PathActual == 0)
+        {
+            clouds.SetActive(true);
+            rains.SetActive(true);
+        }
     }
-
+    
 }

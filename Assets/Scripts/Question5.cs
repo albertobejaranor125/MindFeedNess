@@ -4,23 +4,19 @@ using UnityEngine;
 
 public class Question5 : DecisionNode
 {
-    public override void endNode()
-    {
-        throw new System.NotImplementedException();
-    }
-
+    [SerializeField] private GameObject clouds;
+    [SerializeField] private GameObject rains;
     public override void initNode()
     {
-        throw new System.NotImplementedException();
+        base.initNode();
     }
-
-    public override bool processNode()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public override void updateNode()
     {
-        throw new System.NotImplementedException();
+        base.updateNode();
+        if(PathActual == 0)
+        {
+            clouds.SetActive(false);
+            rains.SetActive(false);
+        }
     }
 }

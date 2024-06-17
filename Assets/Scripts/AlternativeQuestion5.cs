@@ -4,26 +4,34 @@ using UnityEngine;
 
 public class AlternativeQuestion5 : DecisionNode
 {
+    [SerializeField] private GameObject bedBlanket;
+    [SerializeField] private GameObject axeFirstCross;
+    private Animation bedBlanketAnimation;
     private Animation animationClips;
-    public override void endNode()
+    public AnimationClip axeAlternativeIdle;
+    public AnimationClip axeAlternativeCut;
+    private void Start()
     {
-        animationClips.Stop("Axe Alternative Idle");
-        animationClips.Stop("Axe Alternative Cut");
+        bedBlanketAnimation = bedBlanket.GetComponent<Animation>();
     }
-
     public override void initNode()
     {
-        animationClips = GetComponent<Animation>();
-        animationClips.Play("Axe Alternative Idle");
+        base.initNode();
     }
-
-    public override bool processNode()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public override void updateNode()
     {
-        animationClips.Play("Axe Alternative Cut");
+        base.updateNode();
+        if(PathActual == 0 && this.name == "AlternativeSphereFifthChoiceAndTakeAxe")
+        {
+            animationClips.Play("Axe Alternative Idle");
+            animationClips.Stop("Axe Alternative Idle");
+            animationClips.Play("Axe Alternative Cut");
+            animationClips.Stop("Axe Alternative Cut");
+        }
+        if (PathActual == 1)
+        {
+            bedBlanketAnimation.Play("BedBlanketIdle");
+            bedBlanketAnimation.Stop("BedBlanketIdle");
+        }
     }
 }

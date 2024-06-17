@@ -1,30 +1,53 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Question2 : DecisionNode
 {
-    private Animation animationClips;
-    public override void endNode()
+    private Animator animationUmbrella;
+    [SerializeField] private GameObject umbrellaOpened;
+    [SerializeField] private AnimationClip umbrellaAttract;
+    [SerializeField] private AnimationClip umbrellaAttach;
+    private bool isEndAnimation = false;
+    private void Start()
     {
-        animationClips.Stop("Umbrella Closed Idle");
-        animationClips.Stop("Umbrella Opened Idle");
+        animationUmbrella = umbrellaOpened.GetComponent<Animator>();
+        
     }
-
     public override void initNode()
     {
-        animationClips = GetComponent<Animation>();
-        animationClips.Play("Umbrella Closed Idle");
-
+        base.initNode();
+        animationUmbrella.enabled = true;
+        StartCoroutine(PlayAnimation("UmbrellaAttract"));
     }
 
-    public override bool processNode()
+    private IEnumerator PlayAnimation(string nameAnimation)
     {
-        throw new System.NotImplementedException();
+        animationUmbrella.Play(nameAnimation);
+        while (!isEndAnimation)
+        {
+            if(animationUmbrella.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
+            {
+                isEndAnimation = true;
+            }
+            yield return null;
+        }
+        question.SetActive(true);
     }
 
     public override void updateNode()
     {
-        animationClips.Play("Umbrella Opened Idle");
+        base.updateNode();
+        if(PathActual == 0)
+        {
+            animationUmbrella.Play("UmbrellaAttach");
+            umbrellaOpened.transform.position = this.transform.position;
+        }
+    }
+    public override void endNode()
+    {
+        base.endNode();
+        
     }
 }

@@ -12,12 +12,12 @@ public class ScriptManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Button exitButton;
     public int score { get; set; }
-    private int highScore;
+    //private int highScore;
     // Start is called before the first frame update
     void Start()
     {
         score = 0;
-        highScore = 0;
+        //highScore = 0;
         UpdateScore(0);
     }
 
