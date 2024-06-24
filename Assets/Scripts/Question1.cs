@@ -5,12 +5,9 @@ using UnityEngine;
 
 public class Question1 : DecisionNode
 {
-    [SerializeField] private GameObject clouds;
-    [SerializeField] private GameObject rains;
-    public override void initNode()
-    {
-        base.initNode();
-    }
+    public GameObject clouds;
+    public GameObject rains;
+    
     public override void updateNode()
     {
         base.updateNode();

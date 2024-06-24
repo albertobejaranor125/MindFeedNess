@@ -15,14 +15,15 @@ public class Question3 : DecisionNode
     [SerializeField] private AnimationClip logTree1Idle;
     [SerializeField] private AnimationClip logTree2Idle;
     [SerializeField] private AnimationClip logTree3Idle;
-    [SerializeField] private GameObject logTree1;
-    [SerializeField] private GameObject logTree2;
-    [SerializeField] private GameObject logTree3;
-    [SerializeField] private GameObject bridgeLog;
-    [SerializeField] private GameObject axeSecondCross;
+    public GameObject logTree1;
+    public GameObject logTree2;
+    public GameObject logTree3;
+    public GameObject bridgeLog;
+    public GameObject axeSecondCross;
     private int logCutted = 0;
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         animatorAxe = axeSecondCross.GetComponent<Animator>();
         animatorLog1 = logTree1.GetComponent<Animator>();
         animatorLog2 = logTree2.GetComponent<Animator>();
@@ -36,46 +37,31 @@ public class Question3 : DecisionNode
     public override void updateNode()
     {
         base.updateNode();
-        if(PathActual == 0 && this.name == "SphereFourthChangeDirectionAndTakeAxe" && logCutted < 3)
+        if(PathActual == 0 && nameNode == "SphereFourthChangeDirectionAndTakeAxe" && logCutted < 3)
         {
+            animatorAxe.Play("AxeSecondCrossIdle");
             while (logCutted < 3)
             {
-                animatorAxe.Play("AxeSecondCrossIdle");
                 animatorAxe.Play("AxeSecondCrossCut");
                 if (logCutted == 0)
                 {
                     logTree1.SetActive(true);
                     animatorLog1.Play("LogTree1Idle");
-                    changeNode();
                 }
                 else if (logCutted == 1)
                 {
                     logTree2.SetActive(true);
                     animatorLog2.Play("LogTree2Idle");
-                    changeNode();
                 }else if (logCutted == 2)
                 {
                     logTree3.SetActive(true);
                     animatorLog3.Play("LogTree3Idle");
-                    changeNode();
                 }
                 logCutted++;
             }
-            /*animationClips.Play("AxeSecondCrossIdle");
-            animationClips.Stop("AxeSecondCrossIdle");
-            animationClips.Play("AxeSecondCrossCut");
-            animationClips.Stop("AxeSecondCrossCut");
-            logTree1.SetActive(true);
-            animationClips.Play("LogTree1Idle");
-            animationClips.Stop("LogTree1Idle");
-            logTree2.SetActive(true);
-            animationClips.Play("LogTree2Idle");
-            animationClips.Stop("LogTree2Idle");
-            logTree3.SetActive(true);
-            animationClips.Play("LogTree3Idle");
-            animationClips.Stop("LogTree3Idle");*/
+            
         }
-        if(PathActual == 0 && this.name == "SpherePutLogAndCrossBridge" && logCutted == 3)
+        if(PathActual == 0 && nameNode == "SpherePutLogAndCrossBridge" && logCutted == 3)
         {
             bridgeLog.SetActive(true);
         }

@@ -4,23 +4,42 @@ using UnityEngine;
 
 public class AlternativeQuestion3 : DecisionNode
 {
-    [SerializeField] private GameObject bedBlanket;
-    private Animation bedBlanketAnimation;
-    private void Start()
+    public GameObject bedBlanket;
+    [SerializeField] private AnimationClip bedBlanketIdle;
+    public GameObject dogs;
+    public GameObject eyeBlink;
+    private Animator bedBlanketAnimation;
+    protected override void Start()
     {
-        bedBlanketAnimation = bedBlanket.GetComponent<Animation>();
+        base.Start();
+        bedBlanketAnimation = bedBlanket.GetComponent<Animator>();
+        
     }
     public override void initNode()
     {
         base.initNode();
+        question.SetActive(false);
+        StartCoroutine(WaitFunction());
+    }
+    private IEnumerator WaitFunction()
+    {
+        yield return new WaitForSeconds(10);
+        eyeBlink.SetActive(false);
+        question.SetActive(true);
     }
     public override void updateNode()
     {
         base.updateNode();
+        if(PathActual == 0)
+        {
+            dogs.GetComponent<AudioSource>().loop = true;
+            dogs.GetComponent<AudioSource>().Play();
+        }
         if(PathActual == 1)
         {
             bedBlanketAnimation.Play("BedBlanketIdle");
-            bedBlanketAnimation.Stop("BedBlanketIdle");
+            dogs.GetComponent<AudioSource>().loop = true;
+            dogs.GetComponent<AudioSource>().Play();
         }
     }
 }

@@ -5,30 +5,34 @@ using UnityEngine.Audio;
 
 public class Question4 : DecisionNode
 {
-    [SerializeField] private GameObject sheeps;
+    public GameObject sheeps;
     public AnimationClip sheepIdle;
     public AudioClip angrySound;
     private Animator animatorSheep;
     private AudioSource audioSource;
-    private void Start()
+    protected override void Start()
     {
-        animatorSheep = GetComponent<Animator>();
+        base.Start();
+        animatorSheep = sheeps.GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
-        sheeps = GetComponent<GameObject>();
+        
         sheeps.GetComponent<AudioSource>().Play();
         sheeps.GetComponent<AudioSource>().loop = true;
     }
     public override void initNode()
     {
         base.initNode();
+        sheeps.SetActive(true);
     }
     public override void updateNode()
     {
         base.updateNode();
         if(PathActual == 0)
         {
-            //Thread.Sleep(10000);
-
+            animatorSheep.enabled = true;
+            StartCoroutine(WaitSheeps());
+            
+            moveToNextPoint();
         }
         if (PathActual == 1)
         {
@@ -36,5 +40,10 @@ public class Question4 : DecisionNode
             animatorSheep.Play("SheepsIdle");
             //audioSource.Play("");
         }
+    }
+    private IEnumerator WaitSheeps()
+    {
+        yield return new WaitForSeconds(10);
+        animatorSheep.Play("SheepsIdle");
     }
 }

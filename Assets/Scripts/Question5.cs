@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Question5 : DecisionNode
 {
-    [SerializeField] private GameObject clouds;
-    [SerializeField] private GameObject rains;
-    public override void initNode()
+    public GameObject clouds;
+    public GameObject rains;
+
+    protected override void Start()
     {
-        base.initNode();
+        base.Start();
     }
     public override void updateNode()
     {

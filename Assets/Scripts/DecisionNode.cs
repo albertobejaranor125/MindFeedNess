@@ -38,13 +38,15 @@ public abstract class DecisionNode : MonoBehaviour
     private bool isUpdate;
     protected DecisionNode lastCheckpoint;
     protected GameObject player;
+    protected string nameNode;
     protected int PathActual;
     protected int NodoActual;
     public GameObject question;
     protected List<List<CheckPoint>> allCheckpoints = new List<List<CheckPoint>>();
-    private void Start()
+    protected virtual void Start()
     {
         player = GameObject.Find("Player");
+        nameNode = null;
     }
     public DecisionNode processNode()
     {
@@ -126,7 +128,7 @@ public abstract class DecisionNode : MonoBehaviour
                 }
                 allCheckpoints.Add(checkPointList); //añadir un camino
                                                                      //recursividad para los hijos de hijos
-                throughDecisionNode(path[path.Count - 1]);
+                //throughDecisionNode(path[path.Count - 1]);
             }
             else
             {
@@ -181,15 +183,18 @@ public abstract class DecisionNode : MonoBehaviour
             initi.Nodo = this.transform;
             initi.Tiempo = 0;
             end = path[0];
+            nameNode = initi.Nodo.name;
         }
         else if (NodoActual < path.Count - 1)
         {
             initi = path[NodoActual];
             end = path[NodoActual + 1];
+            nameNode = initi.Nodo.name;
         }
         else if (NodoActual == path.Count - 1)
         {
             lastCheckpoint = path[NodoActual].Nodo.GetComponent<DecisionNode>();
+            nameNode = path[NodoActual].Nodo.name;
             //enableQuestion();
             PathActual = -1;
             NodoActual = -1;

@@ -1,11 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class AlternativeQuestion2 : DecisionNode
 {
-    public override void initNode()
+    private Animator animatorEyes;
+    public GameObject eyeBlink;
+    [SerializeField] private AnimationClip eyesBlinking;
+    private bool isEndAnimation = false;
+    protected override void Start()
     {
-        base.initNode();
+        base.Start();
+        animatorEyes = eyeBlink.GetComponent<Animator>();
+    }
+    
+    public override void updateNode()
+    {
+        base.updateNode();
+        if(PathActual == 1)
+        {
+            eyeBlink.SetActive(true);
+            animatorEyes.Play("EyesBlinking");
+            
+        }
     }
 }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class AlternativeQuestion1 : DecisionNode
 {
-    public override void initNode()
+    protected override void Start()
     {
-        base.initNode();
+        base.Start();
     }
 }

@@ -6,20 +6,22 @@ using UnityEngine;
 public class Question2 : DecisionNode
 {
     private Animator animationUmbrella;
-    [SerializeField] private GameObject umbrellaOpened;
+    public GameObject umbrellaOpened;
     [SerializeField] private AnimationClip umbrellaAttract;
     [SerializeField] private AnimationClip umbrellaAttach;
     private bool isEndAnimation = false;
-    private void Start()
+    protected override void Start()
     {
-        animationUmbrella = umbrellaOpened.GetComponent<Animator>();
-        
+        base.Start();
+        animationUmbrella = umbrellaOpened.GetComponent<Animator>();  
     }
     public override void initNode()
     {
         base.initNode();
+        question.SetActive(false);
         animationUmbrella.enabled = true;
         StartCoroutine(PlayAnimation("UmbrellaAttract"));
+        StartCoroutine(WaitFunction());
     }
 
     private IEnumerator PlayAnimation(string nameAnimation)
@@ -31,9 +33,8 @@ public class Question2 : DecisionNode
             {
                 isEndAnimation = true;
             }
-            yield return null;
         }
-        question.SetActive(true);
+        yield return null;
     }
 
     public override void updateNode()
@@ -41,9 +42,18 @@ public class Question2 : DecisionNode
         base.updateNode();
         if(PathActual == 0)
         {
-            animationUmbrella.Play("UmbrellaAttach");
-            umbrellaOpened.transform.position = this.transform.position;
+            StartCoroutine(PlayAnimation("UmbrellaAttach"));
+            StartCoroutine(WaitFunction2());
         }
+    }
+    IEnumerator WaitFunction()
+    {
+        yield return new WaitForSeconds(3);
+        question.SetActive(true);
+    }
+    IEnumerator WaitFunction2()
+    {
+        yield return new WaitForSeconds(5);
     }
     public override void endNode()
     {

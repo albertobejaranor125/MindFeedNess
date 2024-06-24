@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class AlternativeQuestion5 : DecisionNode
 {
-    [SerializeField] private GameObject bedBlanket;
-    [SerializeField] private GameObject axeFirstCross;
-    private Animation bedBlanketAnimation;
-    private Animation animationClips;
+    public GameObject bedBlanket;
+    public GameObject axeFirstCross;
+    public GameObject logTreeFireplace1;
+    public GameObject logTreeFireplace2;
+    public GameObject logTreeFireplace3;
+    public GameObject fireFireplace;
     public AnimationClip axeAlternativeIdle;
     public AnimationClip axeAlternativeCut;
-    private void Start()
+    private Animator animatorAxe;
+    private Animator bedBlanketAnimator;
+    private int logCutted = 0;
+    protected override void Start()
     {
-        bedBlanketAnimation = bedBlanket.GetComponent<Animation>();
+        base.Start();
+        bedBlanketAnimator = bedBlanket.GetComponent<Animator>();
+        animatorAxe = axeFirstCross.GetComponent<Animator>();
     }
     public override void initNode()
     {
@@ -21,17 +28,40 @@ public class AlternativeQuestion5 : DecisionNode
     public override void updateNode()
     {
         base.updateNode();
-        if(PathActual == 0 && this.name == "AlternativeSphereFifthChoiceAndTakeAxe")
+        if(PathActual == 0 && nameNode == "AlternativeSphereFifthChoiceAndTakeAxe" && logCutted < 3)
         {
-            animationClips.Play("Axe Alternative Idle");
-            animationClips.Stop("Axe Alternative Idle");
-            animationClips.Play("Axe Alternative Cut");
-            animationClips.Stop("Axe Alternative Cut");
+            
+            animatorAxe.Play("Axe Alternative Idle");
+            while(logCutted < 3){
+                animatorAxe.Play("Axe Alternative Cut");
+                if (logCutted == 0)
+                {
+                    logTreeFireplace1.SetActive(true);
+                }
+                else if (logCutted == 1)
+                {
+                    logTreeFireplace2.SetActive(true);
+                }
+                else if(logCutted == 2)
+                {
+                    logTreeFireplace3.SetActive(true);
+                }
+                logCutted++;
+            }
+            
+        }
+        if(PathActual == 0 && nameNode == "AlternativeSphereFifthChoiceAndTurnOn")
+        {
+            fireFireplace.SetActive(true);
+            StartCoroutine(waitTurnOnFireplace());
         }
         if (PathActual == 1)
         {
-            bedBlanketAnimation.Play("BedBlanketIdle");
-            bedBlanketAnimation.Stop("BedBlanketIdle");
+            bedBlanketAnimator.Play("BedBlanketIdle");
         }
+    }
+    IEnumerator waitTurnOnFireplace()
+    {
+        yield return new WaitForSeconds(10);
     }
 }
