@@ -8,7 +8,7 @@ public class AlternativeQuestion2 : DecisionNode
     private Animator animatorEyes;
     public GameObject eyeBlink;
     [SerializeField] private AnimationClip eyesBlinking;
-    private bool isEndAnimation = false;
+    //private bool isEndAnimation = false;
     protected override void Start()
     {
         base.Start();
@@ -17,12 +17,13 @@ public class AlternativeQuestion2 : DecisionNode
     
     public override void updateNode()
     {
-        base.updateNode();
+        
         if(PathActual == 1)
         {
             eyeBlink.SetActive(true);
             animatorEyes.Play("EyesBlinking");
             
         }
+        base.updateNode();
     }
 }

@@ -10,12 +10,11 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class PlayManager : MonoBehaviour
 {
-    private ScriptManager scriptManager;
     public DecisionNode decisionNodeActual;
     // Start is called before the first frame update
     void Start()
     {
-        scriptManager = GameObject.Find("Canvas").GetComponent<ScriptManager>();
+        
     }
     // Update is called once per frame
     void Update()

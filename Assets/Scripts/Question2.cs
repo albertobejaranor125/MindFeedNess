@@ -26,11 +26,13 @@ public class Question2 : DecisionNode
 
     private IEnumerator PlayAnimation(string nameAnimation)
     {
-        animationUmbrella.Play(nameAnimation);
+        animationUmbrella.Play(nameAnimation, -1, 0);
+        isEndAnimation = false;
         while (!isEndAnimation)
         {
             if(animationUmbrella.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
             {
+                
                 isEndAnimation = true;
             }
         }
@@ -39,11 +41,25 @@ public class Question2 : DecisionNode
 
     public override void updateNode()
     {
-        base.updateNode();
-        if(PathActual == 0)
+        if (PathActual == -1 && Input.GetKey(KeyCode.LeftArrow))
         {
-            StartCoroutine(PlayAnimation("UmbrellaAttach"));
-            StartCoroutine(WaitFunction2());
+            question.SetActive(false);
+            PathActual = 0;
+            NodoActual = -1;
+            animationUmbrella.SetTrigger("Attach");
+            changeNode();
+        }
+        if (PathActual == -1 && Input.GetKey(KeyCode.RightArrow))
+        {
+            question.SetActive(false);
+            PathActual = 1;
+            NodoActual = -1;
+            animationUmbrella.SetTrigger("BackHome");
+            changeNode();
+        }
+        if (PathActual != -1 && animationUmbrella.GetCurrentAnimatorStateInfo(0).IsName("End"))
+        {
+            moveToNextPoint();
         }
     }
     IEnumerator WaitFunction()
@@ -51,13 +67,10 @@ public class Question2 : DecisionNode
         yield return new WaitForSeconds(3);
         question.SetActive(true);
     }
-    IEnumerator WaitFunction2()
-    {
-        yield return new WaitForSeconds(5);
-    }
     public override void endNode()
     {
         base.endNode();
-        
+        umbrellaOpened.transform.position = player.transform.position;
+        umbrellaOpened.transform.rotation = player.transform.rotation;
     }
 }

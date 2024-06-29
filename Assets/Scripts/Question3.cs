@@ -20,7 +20,7 @@ public class Question3 : DecisionNode
     public GameObject logTree3;
     public GameObject bridgeLog;
     public GameObject axeSecondCross;
-    private int logCutted = 0;
+    private int logCutted;
     protected override void Start()
     {
         base.Start();
@@ -36,34 +36,58 @@ public class Question3 : DecisionNode
     }
     public override void updateNode()
     {
-        base.updateNode();
-        if(PathActual == 0 && nameNode == "SphereFourthChangeDirectionAndTakeAxe" && logCutted < 3)
+        if (PathActual == -1 && Input.GetKey(KeyCode.LeftArrow))
         {
-            animatorAxe.Play("AxeSecondCrossIdle");
-            while (logCutted < 3)
-            {
-                animatorAxe.Play("AxeSecondCrossCut");
-                if (logCutted == 0)
-                {
-                    logTree1.SetActive(true);
-                    animatorLog1.Play("LogTree1Idle");
-                }
-                else if (logCutted == 1)
-                {
-                    logTree2.SetActive(true);
-                    animatorLog2.Play("LogTree2Idle");
-                }else if (logCutted == 2)
-                {
-                    logTree3.SetActive(true);
-                    animatorLog3.Play("LogTree3Idle");
-                }
-                logCutted++;
-            }
-            
+            question.SetActive(false);
+            PathActual = 0;
+            NodoActual = -1;
+            animatorAxe.SetTrigger("TakeAxe");
+            cutLog();
+            changeNode();
+        }
+        if (PathActual == -1 && Input.GetKey(KeyCode.RightArrow))
+        {
+            question.SetActive(false);
+            PathActual = 1;
+            NodoActual = -1;
+            animatorAxe.SetTrigger("AnotherPath");
+            changeNode();
+        }
+        if (PathActual != -1 && animatorAxe.GetCurrentAnimatorStateInfo(0).IsName("End"))
+        {
+            moveToNextPoint();
         }
         if(PathActual == 0 && nameNode == "SpherePutLogAndCrossBridge" && logCutted == 3)
         {
             bridgeLog.SetActive(true);
         }
+    }
+
+    private void cutLog()
+    {
+        logCutted = 0;
+        while (logCutted < 3)
+        {
+            if (logCutted == 0)
+            {
+                animatorAxe.SetTrigger("Cut1");
+                logTree1.SetActive(true);
+                animatorLog1.Play("LogTree1Idle");
+            }
+            else if (logCutted == 1)
+            {
+                animatorAxe.SetTrigger("Cut2");
+                logTree2.SetActive(true);
+                animatorLog2.Play("LogTree2Idle");
+            }
+            else if (logCutted == 2)
+            {
+                animatorAxe.SetTrigger("Cut3");
+                logTree3.SetActive(true);
+                animatorLog3.Play("LogTree3Idle");
+            }
+            logCutted++;
+        }
+
     }
 }

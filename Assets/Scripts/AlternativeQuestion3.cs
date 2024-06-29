@@ -18,18 +18,12 @@ public class AlternativeQuestion3 : DecisionNode
     public override void initNode()
     {
         base.initNode();
-        question.SetActive(false);
-        StartCoroutine(WaitFunction());
+        
     }
-    private IEnumerator WaitFunction()
-    {
-        yield return new WaitForSeconds(10);
-        eyeBlink.SetActive(false);
-        question.SetActive(true);
-    }
+    
     public override void updateNode()
     {
-        base.updateNode();
+        
         if(PathActual == 0)
         {
             dogs.GetComponent<AudioSource>().loop = true;
@@ -41,5 +35,6 @@ public class AlternativeQuestion3 : DecisionNode
             dogs.GetComponent<AudioSource>().loop = true;
             dogs.GetComponent<AudioSource>().Play();
         }
+        base.updateNode();
     }
 }

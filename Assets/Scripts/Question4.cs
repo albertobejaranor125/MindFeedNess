@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,24 +27,35 @@ public class Question4 : DecisionNode
     }
     public override void updateNode()
     {
-        base.updateNode();
-        if(PathActual == 0)
+        if (PathActual == -1 && Input.GetKey(KeyCode.LeftArrow))
         {
+            question.SetActive(false);
+            PathActual = 0;
+            NodoActual = -1;
             animatorSheep.enabled = true;
             StartCoroutine(WaitSheeps());
-            
+            //animatorSheep.SetTrigger("WaitAndPass");
+            changeNode();
+        }
+        if (PathActual == -1 && Input.GetKey(KeyCode.RightArrow))
+        {
+            question.SetActive(false);
+            PathActual = 1;
+            NodoActual = -1;
+            animatorSheep.enabled = true;
+            audioSource.Play(0);
+            //animatorSheep.SetTrigger("ForcePass");
+            changeNode();
+        }
+        if (PathActual != -1 && animatorSheep.GetCurrentAnimatorStateInfo(0).IsName("SheepsIdle"))
+        {
             moveToNextPoint();
         }
-        if (PathActual == 1)
-        {
-            audioSource.Play(0);
-            animatorSheep.Play("SheepsIdle");
-            //audioSource.Play("");
-        }
+        
     }
-    private IEnumerator WaitSheeps()
+
+    IEnumerator WaitSheeps()
     {
-        yield return new WaitForSeconds(10);
-        animatorSheep.Play("SheepsIdle");
+        yield return new WaitForSeconds(5);
     }
 }

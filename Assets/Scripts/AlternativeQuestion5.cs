@@ -10,6 +10,8 @@ public class AlternativeQuestion5 : DecisionNode
     public GameObject logTreeFireplace2;
     public GameObject logTreeFireplace3;
     public GameObject fireFireplace;
+    public GameObject gameOverAlternativePath1;
+    public GameObject gameOverAlternativePath2;
     public AnimationClip axeAlternativeIdle;
     public AnimationClip axeAlternativeCut;
     private Animator animatorAxe;
@@ -58,6 +60,18 @@ public class AlternativeQuestion5 : DecisionNode
         if (PathActual == 1)
         {
             bedBlanketAnimator.Play("BedBlanketIdle");
+        }
+    }
+    public override void endNode()
+    {
+        base.endNode();
+        if(nameNode == "AlternativeSphereSecondChoice")
+        {
+            gameOverAlternativePath1.SetActive(true);
+        }
+        if(nameNode == "AlternativeSphereFifthChoiceOrTakeBlanket")
+        {
+            gameOverAlternativePath2.SetActive(true);
         }
     }
     IEnumerator waitTurnOnFireplace()

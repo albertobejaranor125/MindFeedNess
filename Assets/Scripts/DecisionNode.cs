@@ -43,8 +43,10 @@ public abstract class DecisionNode : MonoBehaviour
     protected int NodoActual;
     public GameObject question;
     protected List<List<CheckPoint>> allCheckpoints = new List<List<CheckPoint>>();
+    protected ScriptManager scriptManager;
     protected virtual void Start()
     {
+        scriptManager = GameObject.Find("Canvas").GetComponent<ScriptManager>();
         player = GameObject.Find("Player");
         nameNode = null;
     }
