@@ -29,37 +29,35 @@ public class AlternativeQuestion5 : DecisionNode
     }
     public override void updateNode()
     {
-        base.updateNode();
-        if(PathActual == 0 && nameNode == "AlternativeSphereFifthChoiceAndTakeAxe" && logCutted < 3)
+        if (PathActual == -1 && Input.GetKey(KeyCode.LeftArrow))
         {
-            
-            animatorAxe.Play("Axe Alternative Idle");
-            while(logCutted < 3){
-                animatorAxe.Play("Axe Alternative Cut");
-                if (logCutted == 0)
-                {
-                    logTreeFireplace1.SetActive(true);
-                }
-                else if (logCutted == 1)
-                {
-                    logTreeFireplace2.SetActive(true);
-                }
-                else if(logCutted == 2)
-                {
-                    logTreeFireplace3.SetActive(true);
-                }
-                logCutted++;
-            }
-            
+            question.SetActive(false);
+            PathActual = 0;
+            NodoActual = -1;
+            changeNode();
+        }
+        if (PathActual == -1 && Input.GetKey(KeyCode.RightArrow))
+        {
+            question.SetActive(false);
+            PathActual = 1;
+            NodoActual = -1;
+            changeNode();
+        }
+        if (PathActual != -1)
+        {
+            moveToNextPoint();
+        }
+        if (PathActual == 0 && nameNode == "AlternativeSphereFifthChoiceAndTakeAxe" && logCutted < 3)
+        {
+            cutLog();
         }
         if(PathActual == 0 && nameNode == "AlternativeSphereFifthChoiceAndTurnOn")
         {
             fireFireplace.SetActive(true);
-            StartCoroutine(waitTurnOnFireplace());
         }
-        if (PathActual == 1)
+        if (PathActual == 1 && nameNode == "AlternativeSphereFifthChoiceOrTakeBlanket")
         {
-            bedBlanketAnimator.Play("BedBlanketIdle");
+            bedBlanketAnimator.SetTrigger("CoverBlanket");
         }
     }
     public override void endNode()
@@ -74,8 +72,32 @@ public class AlternativeQuestion5 : DecisionNode
             gameOverAlternativePath2.SetActive(true);
         }
     }
-    IEnumerator waitTurnOnFireplace()
+    private void cutLog()
+    {
+        logCutted = 0;
+        while (logCutted < 3)
+        {
+            if (logCutted == 0)
+            {
+                animatorAxe.SetTrigger("Cut1");
+                logTreeFireplace1.SetActive(true);
+            }
+            else if (logCutted == 1)
+            {
+                animatorAxe.SetTrigger("Cut2");
+                logTreeFireplace2.SetActive(true);
+            }
+            else if (logCutted == 2)
+            {
+                animatorAxe.SetTrigger("Cut3");
+                logTreeFireplace3.SetActive(true);
+            }
+            logCutted++;
+        }
+
+    }
+    /*IEnumerator waitTurnOnFireplace()
     {
         yield return new WaitForSeconds(10);
-    }
+    }*/
 }

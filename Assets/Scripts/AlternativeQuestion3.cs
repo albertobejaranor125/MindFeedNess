@@ -13,28 +13,39 @@ public class AlternativeQuestion3 : DecisionNode
     {
         base.Start();
         bedBlanketAnimation = bedBlanket.GetComponent<Animator>();
-        
+        /*dogs.GetComponent<AudioSource>().loop = true;
+        dogs.GetComponent<AudioSource>().Play();*/
     }
     public override void initNode()
     {
         base.initNode();
-        
+        bedBlanketAnimation.enabled = true;
     }
     
     public override void updateNode()
     {
-        
-        if(PathActual == 0)
+        if (PathActual == -1 && Input.GetKey(KeyCode.LeftArrow))
+        {
+            question.SetActive(false);
+            PathActual = 0;
+            NodoActual = -1;
+            bedBlanketAnimation.SetTrigger("NoCoverBlanket");
+            changeNode();
+        }
+        if (PathActual == -1 && Input.GetKey(KeyCode.RightArrow))
+        {
+            question.SetActive(false);
+            PathActual = 1;
+            NodoActual = -1;
+            
+            bedBlanketAnimation.SetTrigger("CoverBlanket");
+            changeNode();
+        }
+        if (PathActual != -1 && bedBlanketAnimation.GetCurrentAnimatorStateInfo(0).IsName("End"))
         {
             dogs.GetComponent<AudioSource>().loop = true;
             dogs.GetComponent<AudioSource>().Play();
+            moveToNextPoint();
         }
-        if(PathActual == 1)
-        {
-            bedBlanketAnimation.Play("BedBlanketIdle");
-            dogs.GetComponent<AudioSource>().loop = true;
-            dogs.GetComponent<AudioSource>().Play();
-        }
-        base.updateNode();
     }
 }
