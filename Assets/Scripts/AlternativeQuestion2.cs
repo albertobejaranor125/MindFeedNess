@@ -7,8 +7,7 @@ public class AlternativeQuestion2 : DecisionNode
 {
     private Animator animatorEyes;
     public GameObject eyeBlink;
-    [SerializeField] private AnimationClip eyesBlinking;
-    //private bool isEndAnimation = false;
+
     protected override void Start()
     {
         base.Start();

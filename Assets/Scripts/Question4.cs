@@ -11,6 +11,7 @@ public class Question4 : DecisionNode
     public AudioClip angrySound;
     private Animator animatorSheep;
     private AudioSource audioSource;
+    private DateTime tiempo;
     protected override void Start()
     {
         base.Start();
@@ -24,6 +25,8 @@ public class Question4 : DecisionNode
     {
         base.initNode();
         sheeps.SetActive(true);
+        audioSource.enabled = true;
+        tiempo = DateTime.Now;
     }
     public override void updateNode()
     {
@@ -33,8 +36,13 @@ public class Question4 : DecisionNode
             PathActual = 0;
             NodoActual = -1;
             animatorSheep.enabled = true;
-            StartCoroutine(WaitSheeps());
-            //animatorSheep.SetTrigger("WaitAndPass");
+            double minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
+            Debug.Log("Question4 Minus Time: " + minusTime.ToString());
+            while (minusTime < 10000)
+            {
+                minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
+            }
+            animatorSheep.SetTrigger("SheepsWalkAway");
             changeNode();
         }
         if (PathActual == -1 && Input.GetKey(KeyCode.RightArrow))
@@ -44,7 +52,7 @@ public class Question4 : DecisionNode
             NodoActual = -1;
             animatorSheep.enabled = true;
             audioSource.Play(0);
-            //animatorSheep.SetTrigger("ForcePass");
+            animatorSheep.SetTrigger("SheepsWalkAway");
             changeNode();
         }
         if (PathActual != -1 && animatorSheep.GetCurrentAnimatorStateInfo(0).IsName("SheepsIdle"))
@@ -52,10 +60,5 @@ public class Question4 : DecisionNode
             moveToNextPoint();
         }
         
-    }
-
-    IEnumerator WaitSheeps()
-    {
-        yield return new WaitForSeconds(5);
     }
 }

@@ -1,26 +1,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class Question3 : DecisionNode
 {
+    protected enum state { none, cogerHacha, cortar1, cortar2, cortar3, irse}
+    protected state estado;
     private Animator animatorAxe;
     private Animator animatorLog1;
     private Animator animatorLog2;
     private Animator animatorLog3;
-    [SerializeField] private AnimationClip axeSecondCrossIdle;
-    [SerializeField] private AnimationClip axeSecondCrossCut;
-    [SerializeField] private AnimationClip logTree1Idle;
-    [SerializeField] private AnimationClip logTree2Idle;
-    [SerializeField] private AnimationClip logTree3Idle;
     public GameObject logTree1;
     public GameObject logTree2;
     public GameObject logTree3;
     public GameObject bridgeLog;
     public GameObject axeSecondCross;
-    private int logCutted;
+    //private int logCutted;
+    private DateTime tiempo;
+    /*en el update
+(Datetime.Now-tiempo).TotalMilliseconds*/
     protected override void Start()
     {
         base.Start();
@@ -33,16 +34,18 @@ public class Question3 : DecisionNode
     {
         base.initNode();
         animatorAxe.enabled = true;
+        tiempo = DateTime.Now;
+        estado = state.none;
     }
     public override void updateNode()
     {
+        //Debug.Log("Question3 Minus Time: "+(DateTime.Now - tiempo).TotalMilliseconds.ToString());
+        //Debug.Log("Animation current name: " + animatorAxe.GetCurrentAnimatorClipInfo(0)[0].clip.name);
         if (PathActual == -1 && Input.GetKey(KeyCode.LeftArrow))
         {
             question.SetActive(false);
             PathActual = 0;
             NodoActual = -1;
-            animatorAxe.SetTrigger("TakeAxe");
-            cutLog();
             changeNode();
         }
         if (PathActual == -1 && Input.GetKey(KeyCode.RightArrow))
@@ -51,43 +54,80 @@ public class Question3 : DecisionNode
             PathActual = 1;
             NodoActual = -1;
             animatorAxe.SetTrigger("AnotherPath");
+            estado = state.irse;
             changeNode();
         }
-        if (PathActual != -1 && animatorAxe.GetCurrentAnimatorStateInfo(0).IsName("End"))
+        if (PathActual == 0 && NodoActual == -1)
         {
             moveToNextPoint();
         }
-        if(PathActual == 0 && nameNode == "SpherePutLogAndCrossBridge" && logCutted == 3)
+        /*if(PathActual == 0 && estado == state.none)
+        {
+            animatorAxe.SetTrigger("TakeAxe");
+            estado = state.cogerHacha;
+        }
+        if(estado == state.cogerHacha && PathActual == 0)
+        {
+            estado = state.cortar1;
+            animatorAxe.SetTrigger("Cut");
+            logTree1.SetActive(true);
+        }
+        if (estado == state.cortar1 && PathActual == 0)
+        {
+            estado = state.cortar2;
+            animatorAxe.SetTrigger("Cut");
+            logTree2.SetActive(true);
+        }
+        if (estado == state.cortar2 && PathActual == 0)
+        {
+            estado = state.cortar3;
+            animatorAxe.SetTrigger("Cut");
+            logTree3.SetActive(true);
+        }
+        if (estado == state.cortar3 && PathActual == 0)
+        {
+            estado = state.irse;
+            animatorAxe.SetTrigger("EndCut");
+        }*/
+        if(PathActual == 0 && nameNode == "SphereFourthChangeDirectionAndTakeAxe")
+        {
+            if(estado == state.none)
+            {
+                animatorAxe.SetTrigger("TakeAxe");
+                estado = state.cogerHacha;
+            }
+            if(estado == state.cogerHacha)
+            {
+                animatorAxe.SetTrigger("Cut");
+                estado = state.cortar1;
+                logTree1.SetActive(true);
+            }
+            if(estado == state.cortar1)
+            {
+                animatorAxe.SetTrigger("Cut");
+                estado = state.cortar2;
+                logTree2.SetActive(true);
+            }
+            if (estado == state.cortar2)
+            {
+                animatorAxe.SetTrigger("Cut");
+                estado = state.cortar3;
+                logTree3.SetActive(true);
+            }
+            if (estado == state.cortar3)
+            {
+                animatorAxe.SetTrigger("EndCut");
+                estado = state.irse;
+            }
+        }
+        if (PathActual != -1 && estado == state.irse)
+        {
+            moveToNextPoint();
+        }
+        if(PathActual == 0 && nameNode == "SpherePutLogAndCrossBridge")
         {
             bridgeLog.SetActive(true);
         }
     }
-
-    private void cutLog()
-    {
-        logCutted = 0;
-        while (logCutted < 3)
-        {
-            if (logCutted == 0)
-            {
-                animatorAxe.SetTrigger("Cut1");
-                logTree1.SetActive(true);
-                animatorLog1.Play("LogTree1Idle");
-            }
-            else if (logCutted == 1)
-            {
-                animatorAxe.SetTrigger("Cut2");
-                logTree2.SetActive(true);
-                animatorLog2.Play("LogTree2Idle");
-            }
-            else if (logCutted == 2)
-            {
-                animatorAxe.SetTrigger("Cut3");
-                logTree3.SetActive(true);
-                animatorLog3.Play("LogTree3Idle");
-            }
-            logCutted++;
-        }
-
-    }
+   
 }

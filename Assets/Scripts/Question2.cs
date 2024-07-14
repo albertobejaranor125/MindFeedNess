@@ -7,8 +7,6 @@ public class Question2 : DecisionNode
 {
     private Animator animationUmbrella;
     public GameObject umbrellaOpened;
-    [SerializeField] private AnimationClip umbrellaAttract;
-    [SerializeField] private AnimationClip umbrellaAttach;
     private bool isEndAnimation = false;
     protected override void Start()
     {
@@ -32,7 +30,6 @@ public class Question2 : DecisionNode
         {
             if(animationUmbrella.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1)
             {
-                
                 isEndAnimation = true;
             }
         }

@@ -9,22 +9,11 @@ using System;
 
 public class ScriptManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private Button exitButton;
-    public int score { get; set; }
-    //private int highScore;
+    public Button exitButton;
     // Start is called before the first frame update
     void Start()
     {
-        score = 0;
-        //highScore = 0;
-        UpdateScore(0);
-    }
 
-    public void UpdateScore(int scoreToAdd)
-    {
-        score += scoreToAdd;
-        scoreText.text = "Puntos: "+score;
     }
 
     // Update is called once per frame
