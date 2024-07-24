@@ -26,6 +26,7 @@ public class AlternativeQuestion2 : DecisionNode
             PathActual = 0;
             NodoActual = -1;
             eyeBlink.SetActive(true);
+            SaveExport.getInstance().AddData("AN2: Pesimismo; 'no'");
             animatorEyes.SetTrigger("StayWakeUp");
             changeNode();
         }
@@ -35,6 +36,7 @@ public class AlternativeQuestion2 : DecisionNode
             PathActual = 1;
             NodoActual = -1;
             eyeBlink.SetActive(true);
+            SaveExport.getInstance().AddData("AN2: Pesimismo; 'sí'");
             animatorEyes.SetTrigger("EyesBlinkingOn");
             changeNode();
         }

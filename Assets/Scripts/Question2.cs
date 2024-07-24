@@ -44,6 +44,7 @@ public class Question2 : DecisionNode
             PathActual = 0;
             NodoActual = -1;
             animationUmbrella.SetTrigger("Attach");
+            SaveExport.getInstance().AddData("N2: Pesimismo; 'no'");
             changeNode();
         }
         if (PathActual == -1 && Input.GetKey(KeyCode.RightArrow))
@@ -52,6 +53,7 @@ public class Question2 : DecisionNode
             PathActual = 1;
             NodoActual = -1;
             animationUmbrella.SetTrigger("BackHome");
+            SaveExport.getInstance().AddData("N2: Pesimismo; 'sí'");
             changeNode();
         }
         if (PathActual != -1 && animationUmbrella.GetCurrentAnimatorStateInfo(0).IsName("End"))

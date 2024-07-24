@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,9 @@ public class AlternativeQuestion5 : DecisionNode
     public AnimationClip axeAlternativeCut;
     private Animator animatorAxe;
     private Animator bedBlanketAnimator;
-    private int logCutted = 0;
+    protected enum state { none, cogerHacha, cortar1, cortar2, cortar3, irse }
+    protected state estado;
+    private DateTime tiempo;
     protected override void Start()
     {
         base.Start();
@@ -26,6 +29,9 @@ public class AlternativeQuestion5 : DecisionNode
     public override void initNode()
     {
         base.initNode();
+        animatorAxe.enabled = true;
+        estado = state.none;
+        tiempo = DateTime.Now;
     }
     public override void updateNode()
     {
@@ -34,6 +40,8 @@ public class AlternativeQuestion5 : DecisionNode
             question.SetActive(false);
             PathActual = 0;
             NodoActual = -1;
+            SaveExport.getInstance().AddData("AN5: Energía; 'sí'");
+            SaveExport.getInstance().AddData("AN5: Fatiga; 'no'");
             changeNode();
         }
         if (PathActual == -1 && Input.GetKey(KeyCode.RightArrow))
@@ -41,15 +49,64 @@ public class AlternativeQuestion5 : DecisionNode
             question.SetActive(false);
             PathActual = 1;
             NodoActual = -1;
+            SaveExport.getInstance().AddData("AN5: Energía; 'no'");
+            SaveExport.getInstance().AddData("AN5: Fatiga; 'sí'");
+            animatorAxe.SetTrigger("AnotherPath");
+            estado = state.irse;
             changeNode();
         }
-        if (PathActual != -1)
+        if(PathActual == 0 && NodoActual == -1)
         {
             moveToNextPoint();
         }
-        if (PathActual == 0 && nameNode == "AlternativeSphereFifthChoiceAndTakeAxe" && logCutted < 3)
+        if (PathActual != -1 && estado == state.irse)
         {
-            cutLog();
+            moveToNextPoint();
+        }
+        if (PathActual == 0 && nameNode == "AlternativeSphereFifthChoiceAndTakeAxe")
+        {
+            double minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
+            Debug.Log("AlternativeQuestion5 Minus Time: " + minusTime.ToString());
+            if (estado == state.none)
+            {
+                animatorAxe.SetTrigger("TakeAxe");
+                estado = state.cogerHacha;
+            }
+            if (estado == state.cogerHacha)
+            {
+                animatorAxe.SetTrigger("Cut");
+                estado = state.cortar1;
+                while(minusTime <= 11000)
+                {
+                    minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
+                }
+                logTreeFireplace1.SetActive(true);
+            }
+            if (estado == state.cortar1)
+            {
+                animatorAxe.SetTrigger("Cut");
+                estado = state.cortar2;
+                while (minusTime <= 14000)
+                {
+                    minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
+                }
+                logTreeFireplace2.SetActive(true);
+            }
+            if (estado == state.cortar2)
+            {
+                animatorAxe.SetTrigger("Cut");
+                estado = state.cortar3;
+                while (minusTime <= 17000)
+                {
+                    minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
+                }
+                logTreeFireplace3.SetActive(true);
+            }
+            if (estado == state.cortar3)
+            {
+                animatorAxe.SetTrigger("EndCut");
+                estado = state.irse;
+            }
         }
         if(PathActual == 0 && nameNode == "AlternativeSphereFifthChoiceAndTurnOn")
         {
@@ -72,32 +129,5 @@ public class AlternativeQuestion5 : DecisionNode
             gameOverAlternativePath2.SetActive(true);
         }
     }
-    private void cutLog()
-    {
-        logCutted = 0;
-        while (logCutted < 3)
-        {
-            if (logCutted == 0)
-            {
-                animatorAxe.SetTrigger("Cut1");
-                logTreeFireplace1.SetActive(true);
-            }
-            else if (logCutted == 1)
-            {
-                animatorAxe.SetTrigger("Cut2");
-                logTreeFireplace2.SetActive(true);
-            }
-            else if (logCutted == 2)
-            {
-                animatorAxe.SetTrigger("Cut3");
-                logTreeFireplace3.SetActive(true);
-            }
-            logCutted++;
-        }
 
-    }
-    /*IEnumerator waitTurnOnFireplace()
-    {
-        yield return new WaitForSeconds(10);
-    }*/
 }

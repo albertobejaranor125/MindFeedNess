@@ -9,6 +9,7 @@ public class AlternativeQuestion3 : DecisionNode
     public GameObject dogs;
     public GameObject eyeBlink;
     private Animator bedBlanketAnimation;
+    public AudioClip dogBark;
     protected enum state { none, cogerManta, noCogerManta, irse }
     protected state estado;
     private DateTime tiempo;
@@ -16,13 +17,10 @@ public class AlternativeQuestion3 : DecisionNode
     {
         base.Start();
         bedBlanketAnimation = bedBlanket.GetComponent<Animator>();
-        /*dogs.GetComponent<AudioSource>().loop = true;
-        dogs.GetComponent<AudioSource>().Play();*/
     }
     public override void initNode()
     {
         base.initNode();
-        bedBlanketAnimation.enabled = true;
         question.SetActive(false);
         tiempo = DateTime.Now;
         StartCoroutine(WaitFunction());
@@ -35,6 +33,8 @@ public class AlternativeQuestion3 : DecisionNode
             question.SetActive(false);
             PathActual = 0;
             NodoActual = -1;
+            SaveExport.getInstance().AddData("AN3: Energía; 'sí'");
+            SaveExport.getInstance().AddData("AN3: Fatiga; 'no'");
             bedBlanketAnimation.SetTrigger("NoCoverBlanket");
             estado = state.noCogerManta;
             bedBlanketAnimation.SetTrigger("EndBlanket");
@@ -46,11 +46,13 @@ public class AlternativeQuestion3 : DecisionNode
             question.SetActive(false);
             PathActual = 1;
             NodoActual = -1;
+            SaveExport.getInstance().AddData("AN3: Energía; 'no'");
+            SaveExport.getInstance().AddData("AN3: Fatiga; 'sí'");
             bedBlanketAnimation.SetTrigger("CoverBlanket");
             estado = state.cogerManta;
             double minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
             Debug.Log("AlternativeQuestion3 Minus Time: " + minusTime.ToString());
-            while (minusTime < 7000)
+            while (minusTime <= 9000)
             {
                 minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
             }
@@ -60,6 +62,8 @@ public class AlternativeQuestion3 : DecisionNode
         }
         if (PathActual != -1 && estado == state.irse)
         {
+            
+            dogs.GetComponent<AudioSource>().enabled = true;
             dogs.GetComponent<AudioSource>().loop = true;
             dogs.GetComponent<AudioSource>().Play();
             moveToNextPoint();

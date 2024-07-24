@@ -46,6 +46,8 @@ public class Question3 : DecisionNode
             question.SetActive(false);
             PathActual = 0;
             NodoActual = -1;
+            SaveExport.getInstance().AddData("N3: Energía; 'sí'");
+            SaveExport.getInstance().AddData("N3: Fatiga; 'no'");
             changeNode();
         }
         if (PathActual == -1 && Input.GetKey(KeyCode.RightArrow))
@@ -53,6 +55,8 @@ public class Question3 : DecisionNode
             question.SetActive(false);
             PathActual = 1;
             NodoActual = -1;
+            SaveExport.getInstance().AddData("N3: Energía; 'no'");
+            SaveExport.getInstance().AddData("N3: Fatiga; 'sí'");
             animatorAxe.SetTrigger("AnotherPath");
             estado = state.irse;
             changeNode();
@@ -61,37 +65,11 @@ public class Question3 : DecisionNode
         {
             moveToNextPoint();
         }
-        /*if(PathActual == 0 && estado == state.none)
-        {
-            animatorAxe.SetTrigger("TakeAxe");
-            estado = state.cogerHacha;
-        }
-        if(estado == state.cogerHacha && PathActual == 0)
-        {
-            estado = state.cortar1;
-            animatorAxe.SetTrigger("Cut");
-            logTree1.SetActive(true);
-        }
-        if (estado == state.cortar1 && PathActual == 0)
-        {
-            estado = state.cortar2;
-            animatorAxe.SetTrigger("Cut");
-            logTree2.SetActive(true);
-        }
-        if (estado == state.cortar2 && PathActual == 0)
-        {
-            estado = state.cortar3;
-            animatorAxe.SetTrigger("Cut");
-            logTree3.SetActive(true);
-        }
-        if (estado == state.cortar3 && PathActual == 0)
-        {
-            estado = state.irse;
-            animatorAxe.SetTrigger("EndCut");
-        }*/
         if(PathActual == 0 && nameNode == "SphereFourthChangeDirectionAndTakeAxe")
         {
-            if(estado == state.none)
+            double minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
+            Debug.Log("Question3 Minus Time: " + minusTime.ToString());
+            if (estado == state.none)
             {
                 animatorAxe.SetTrigger("TakeAxe");
                 estado = state.cogerHacha;
@@ -100,18 +78,30 @@ public class Question3 : DecisionNode
             {
                 animatorAxe.SetTrigger("Cut");
                 estado = state.cortar1;
+                while (minusTime <= 7000)
+                {
+                    minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
+                }
                 logTree1.SetActive(true);
             }
             if(estado == state.cortar1)
             {
                 animatorAxe.SetTrigger("Cut");
                 estado = state.cortar2;
+                while (minusTime <= 10000)
+                {
+                    minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
+                }
                 logTree2.SetActive(true);
             }
             if (estado == state.cortar2)
             {
                 animatorAxe.SetTrigger("Cut");
                 estado = state.cortar3;
+                while (minusTime <= 13000)
+                {
+                    minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
+                }
                 logTree3.SetActive(true);
             }
             if (estado == state.cortar3)

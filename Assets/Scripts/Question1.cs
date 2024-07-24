@@ -7,7 +7,7 @@ public class Question1 : DecisionNode
 {
     public GameObject clouds;
     public GameObject rains;
-    
+    public GameObject umbrella;
     public override void updateNode()
     {
         base.updateNode();
@@ -15,6 +15,12 @@ public class Question1 : DecisionNode
         {
             clouds.SetActive(true);
             rains.SetActive(true);
+            umbrella.SetActive(true);
+            SaveExport.getInstance().AddData("N1: Energía; 'sí'");
+        }
+        if (PathActual == 1)
+        {
+            SaveExport.getInstance().AddData("N1: Energía; 'no'");
         }
     }
     

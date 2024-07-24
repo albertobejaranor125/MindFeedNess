@@ -27,11 +27,7 @@ public class MainUIHandlerDefinitive : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*RequestMainMenu.SetActive(false);
-        MainMenu.SetActive(true);
-        CreditMenu.SetActive(false);
-        OptionMenu.SetActive(false);
-        PlayMenu.SetActive(false);*/
+
     }
     public void StartMenu()
     {

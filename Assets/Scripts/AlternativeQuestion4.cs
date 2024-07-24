@@ -23,8 +23,8 @@ public class AlternativeQUestion4 : DecisionNode
     public override void initNode()
     {
         base.initNode();
-        animatorDog.enabled = true;
-        animatorShoes.enabled = true;
+        /*animatorDog.enabled = true;
+        animatorShoes.enabled = true;*/
         tiempo = DateTime.Now;
         audioSource.enabled = true;
         estado = state.none;
@@ -36,11 +36,13 @@ public class AlternativeQUestion4 : DecisionNode
             question.SetActive(false);
             PathActual = 0;
             NodoActual = -1;
+            SaveExport.getInstance().AddData("AN4: Irritabilidad; 'no'");
+            SaveExport.getInstance().AddData("AN4: Agitación; 'no'");
             double minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
             animatorDog.SetTrigger("DogAway");
             estado = state.perroCorrer;
             Debug.Log("AlternativeQuestion4 Path_1 Minus Time: " + minusTime.ToString());
-            while (minusTime < 13000)
+            while (minusTime <= 13000)
             {
                 minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
             }
@@ -55,6 +57,8 @@ public class AlternativeQUestion4 : DecisionNode
             question.SetActive(false);
             PathActual = 1;
             NodoActual = -1;
+            SaveExport.getInstance().AddData("AN4: Irritabilidad; 'sí'");
+            SaveExport.getInstance().AddData("AN4: Agitación; 'sí'");
             shoes.SetActive(true);
             changeNode();
         }
@@ -76,7 +80,7 @@ public class AlternativeQUestion4 : DecisionNode
             estado = state.perroCorrer;
             double minusTime2 = (DateTime.Now - tiempo).TotalMilliseconds;
             Debug.Log("AlternativeQuestion4 Path_2 Minus Time: " + minusTime2.ToString());
-            while (minusTime2 < 16000)
+            while (minusTime2 <= 16000)
             {
                 minusTime2 = (DateTime.Now - tiempo).TotalMilliseconds;
             }

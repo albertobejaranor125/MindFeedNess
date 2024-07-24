@@ -8,4 +8,9 @@ public class AlternativeQuestion1 : DecisionNode
     {
         base.Start();
     }
+    public override void updateNode()
+    {
+        base.updateNode();
+        SaveExport.getInstance().AddData("AN1: Energía; 'no'");
+    }
 }
