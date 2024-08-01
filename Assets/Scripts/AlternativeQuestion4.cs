@@ -37,7 +37,7 @@ public class AlternativeQUestion4 : DecisionNode
             PathActual = 0;
             NodoActual = -1;
             SaveExport.getInstance().AddData("AN4: Irritabilidad; 'no'");
-            SaveExport.getInstance().AddData("AN4: Agitación; 'no'");
+            SaveExport.getInstance().AddData("AN4: Agitacion; 'no'");
             double minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
             animatorDog.SetTrigger("DogAway");
             estado = state.perroCorrer;
@@ -57,8 +57,8 @@ public class AlternativeQUestion4 : DecisionNode
             question.SetActive(false);
             PathActual = 1;
             NodoActual = -1;
-            SaveExport.getInstance().AddData("AN4: Irritabilidad; 'sí'");
-            SaveExport.getInstance().AddData("AN4: Agitación; 'sí'");
+            SaveExport.getInstance().AddData("AN4: Irritabilidad; 'si'");
+            SaveExport.getInstance().AddData("AN4: Agitacion; 'si'");
             shoes.SetActive(true);
             changeNode();
         }

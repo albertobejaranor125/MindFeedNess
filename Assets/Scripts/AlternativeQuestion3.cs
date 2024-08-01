@@ -33,7 +33,7 @@ public class AlternativeQuestion3 : DecisionNode
             question.SetActive(false);
             PathActual = 0;
             NodoActual = -1;
-            SaveExport.getInstance().AddData("AN3: Energía; 'sí'");
+            SaveExport.getInstance().AddData("AN3: Energia; 'si'");
             SaveExport.getInstance().AddData("AN3: Fatiga; 'no'");
             bedBlanketAnimation.SetTrigger("NoCoverBlanket");
             estado = state.noCogerManta;
@@ -46,8 +46,8 @@ public class AlternativeQuestion3 : DecisionNode
             question.SetActive(false);
             PathActual = 1;
             NodoActual = -1;
-            SaveExport.getInstance().AddData("AN3: Energía; 'no'");
-            SaveExport.getInstance().AddData("AN3: Fatiga; 'sí'");
+            SaveExport.getInstance().AddData("AN3: Energia; 'no'");
+            SaveExport.getInstance().AddData("AN3: Fatiga; 'si'");
             bedBlanketAnimation.SetTrigger("CoverBlanket");
             estado = state.cogerManta;
             double minusTime = (DateTime.Now - tiempo).TotalMilliseconds;

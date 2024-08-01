@@ -10,7 +10,17 @@ public class AlternativeQuestion1 : DecisionNode
     }
     public override void updateNode()
     {
-        base.updateNode();
-        SaveExport.getInstance().AddData("AN1: Energía; 'no'");
+        if(PathActual == -1 && (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow)))
+        {
+            question.SetActive(false);
+            PathActual = 0;
+            NodoActual = -1;
+            SaveExport.getInstance().AddData("AN1: Energia; 'no'");
+            changeNode();
+        }
+        if(PathActual != -1)
+        {
+            moveToNextPoint();
+        }
     }
 }

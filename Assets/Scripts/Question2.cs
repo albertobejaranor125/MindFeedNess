@@ -7,6 +7,7 @@ public class Question2 : DecisionNode
 {
     private Animator animationUmbrella;
     public GameObject umbrellaOpened;
+    public GameObject umbrella;
     private bool isEndAnimation = false;
     protected override void Start()
     {
@@ -53,7 +54,8 @@ public class Question2 : DecisionNode
             PathActual = 1;
             NodoActual = -1;
             animationUmbrella.SetTrigger("BackHome");
-            SaveExport.getInstance().AddData("N2: Pesimismo; 'sí'");
+            umbrella.SetActive(false);
+            SaveExport.getInstance().AddData("N2: Pesimismo; 'si'");
             changeNode();
         }
         if (PathActual != -1 && animationUmbrella.GetCurrentAnimatorStateInfo(0).IsName("End"))

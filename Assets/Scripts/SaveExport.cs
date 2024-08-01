@@ -8,10 +8,10 @@ public class SaveExport
 {
     private static SaveExport instanceSaveExport;
     private string fileName = "";
-    public SaveExport()
+    private SaveExport()
     {
-        instanceSaveExport = new SaveExport();
         fileName = Application.dataPath + "/dataParticipant.csv";
+        Debug.Log(fileName);
     }
     public static SaveExport getInstance()
     {

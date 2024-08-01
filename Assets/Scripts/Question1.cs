@@ -10,17 +10,31 @@ public class Question1 : DecisionNode
     public GameObject umbrella;
     public override void updateNode()
     {
-        base.updateNode();
-        if (PathActual == 0)
+        if (PathActual == -1 && Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            question.SetActive(false);
+            PathActual = 0;
+            NodoActual = -1;
+            SaveExport.getInstance().AddData("N1: Energia; 'si'");
+            changeNode();
+        }
+        if (PathActual == -1 && Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            question.SetActive(false);
+            PathActual = 1;
+            NodoActual = -1;
+            SaveExport.getInstance().AddData("N1: Energia; 'no'");
+            changeNode();
+        }
+        if(PathActual != -1)
+        {
+            moveToNextPoint();
+        }
+        if(PathActual == 0)
         {
             clouds.SetActive(true);
             rains.SetActive(true);
             umbrella.SetActive(true);
-            SaveExport.getInstance().AddData("N1: Energía; 'sí'");
-        }
-        if (PathActual == 1)
-        {
-            SaveExport.getInstance().AddData("N1: Energía; 'no'");
         }
     }
     

@@ -109,7 +109,7 @@ public class Question4 : DecisionNode
             PathActual = 0;
             NodoActual = -1;
             SaveExport.getInstance().AddData("N4: Irritabilidad; 'no'");
-            SaveExport.getInstance().AddData("N4: Agitación; 'no'");
+            SaveExport.getInstance().AddData("N4: Agitacion; 'no'");
             animatorSheep.enabled = true;
             double minusTime = (DateTime.Now - tiempo).TotalMilliseconds;
             Debug.Log("Question4 Minus Time: " + minusTime.ToString());
@@ -125,8 +125,8 @@ public class Question4 : DecisionNode
             question.SetActive(false);
             PathActual = 1;
             NodoActual = -1;
-            SaveExport.getInstance().AddData("N4: Irritabilidad; 'sí'");
-            SaveExport.getInstance().AddData("N4: Agitación; 'sí'");
+            SaveExport.getInstance().AddData("N4: Irritabilidad; 'si'");
+            SaveExport.getInstance().AddData("N4: Agitacion; 'si'");
             animatorSheep.enabled = true;
             audioSource.enabled = true;
             audioSource.Play(0);

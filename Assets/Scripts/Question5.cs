@@ -14,18 +14,33 @@ public class Question5 : DecisionNode
     }
     public override void updateNode()
     {
-        base.updateNode();
+        if(PathActual == -1 && Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            question.SetActive(false);
+            PathActual = 0;
+            NodoActual = -1;
+            
+            SaveExport.getInstance().AddData("N5: Energia; 'si'");
+            SaveExport.getInstance().AddData("N5: Fatiga; 'no'");
+            changeNode();
+        }
+        if (PathActual == -1 && Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            question.SetActive(false);
+            PathActual = 1;
+            NodoActual = -1;
+            SaveExport.getInstance().AddData("N5: Energia; 'no'");
+            SaveExport.getInstance().AddData("N5: Fatiga; 'si'");
+            changeNode();
+        }
+        if(PathActual != -1)
+        {
+            moveToNextPoint();
+        }
         if(PathActual == 0)
         {
             clouds.SetActive(false);
             rains.SetActive(false);
-            SaveExport.getInstance().AddData("N5: Energía; 'sí'");
-            SaveExport.getInstance().AddData("N5: Fatiga; 'no'");
-        }
-        if (PathActual == 1)
-        {
-            SaveExport.getInstance().AddData("N5: Energía; 'no'");
-            SaveExport.getInstance().AddData("N5: Fatiga; 'sí'");
         }
     }
     public override void endNode()

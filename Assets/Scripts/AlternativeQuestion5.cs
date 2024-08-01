@@ -40,7 +40,7 @@ public class AlternativeQuestion5 : DecisionNode
             question.SetActive(false);
             PathActual = 0;
             NodoActual = -1;
-            SaveExport.getInstance().AddData("AN5: Energía; 'sí'");
+            SaveExport.getInstance().AddData("AN5: Energia; 'si'");
             SaveExport.getInstance().AddData("AN5: Fatiga; 'no'");
             changeNode();
         }
@@ -49,8 +49,8 @@ public class AlternativeQuestion5 : DecisionNode
             question.SetActive(false);
             PathActual = 1;
             NodoActual = -1;
-            SaveExport.getInstance().AddData("AN5: Energía; 'no'");
-            SaveExport.getInstance().AddData("AN5: Fatiga; 'sí'");
+            SaveExport.getInstance().AddData("AN5: Energia; 'no'");
+            SaveExport.getInstance().AddData("AN5: Fatiga; 'si'");
             animatorAxe.SetTrigger("AnotherPath");
             estado = state.irse;
             changeNode();

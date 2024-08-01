@@ -46,7 +46,7 @@ public class Question3 : DecisionNode
             question.SetActive(false);
             PathActual = 0;
             NodoActual = -1;
-            SaveExport.getInstance().AddData("N3: Energía; 'sí'");
+            SaveExport.getInstance().AddData("N3: Energia; 'si'");
             SaveExport.getInstance().AddData("N3: Fatiga; 'no'");
             changeNode();
         }
@@ -55,8 +55,8 @@ public class Question3 : DecisionNode
             question.SetActive(false);
             PathActual = 1;
             NodoActual = -1;
-            SaveExport.getInstance().AddData("N3: Energía; 'no'");
-            SaveExport.getInstance().AddData("N3: Fatiga; 'sí'");
+            SaveExport.getInstance().AddData("N3: Energia; 'no'");
+            SaveExport.getInstance().AddData("N3: Fatiga; 'si'");
             animatorAxe.SetTrigger("AnotherPath");
             estado = state.irse;
             changeNode();
