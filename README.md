@@ -7,8 +7,8 @@ The player takes choices based on how he feels at the moment. While player is pl
 It's easy to play.
 
 # Controls
-**Left Arrow** - Decision 1
-**Right Arrow** - Decision 2
+- **Left Arrow** - Decision 1
+- **Right Arrow** - Decision 2
 
 # How to execute
 1. Download and install **Unity Hub**  
